@@ -185,8 +185,10 @@ npm run test:act:major
 npm run test:act
 ```
 
----
+## Creating labels
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+```shell
+ gh label create 'release/major' -c '#e99695' -d 'On merge, creates a new release with a major version bump.' -R OWNER/REPO
+ gh label create 'release/minor' -c '#c5def5' -d 'On merge, creates a new release with a minor version bump.' -R OWNER/REPO
+ gh label create 'release/patch' -c '#d4c5f9' -d 'On merge, creates a new release with a patch version bump.' -R OWNER/REPO
+```
