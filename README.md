@@ -63,6 +63,8 @@ on:
 
 jobs:
    release:
+      permissions:
+         contents: write
       # Optional since release-on-merge-action will also narrow on the event state
       if: github.event.pull_request.merged == true
       runs-on: ubuntu-latest
