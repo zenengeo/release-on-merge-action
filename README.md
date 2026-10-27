@@ -69,7 +69,7 @@ jobs:
       steps:
          - name: Run Release on Merge Action
            id: release-on-merge
-           uses: itzg/release-on-merge-action@v1.1.0
+           uses: itzg/release-on-merge-action@v1.1.3
 ```
 
 > [!IMPORTANT]
@@ -81,7 +81,7 @@ Events triggered by the default `GITHUB_TOKEN` do not trigger new workflow runs.
 
 ```yaml
 - name: Create Release
-  uses: itzg/release-on-merge-action@v1.1.0
+  uses: itzg/release-on-merge-action@v1.1.3
   with:
     token: ${{ secrets.GH_RELEASE_TOKEN }}
 ```
@@ -103,7 +103,7 @@ jobs:
       steps:
          - name: Run Release on Merge Action
            id: release-on-merge
-           uses: itzg/release-on-merge-action@v1.1.0
+           uses: itzg/release-on-merge-action@v1.1.3
            with:
               # Be sure to allocate and assign a Personal Access Token with write access to the repository.
               # Required when the creation of the release will need to trigger another Github workflow.
@@ -191,4 +191,38 @@ npm run test:act
  gh label create 'release/major' -c '#e99695' -d 'On merge, creates a new release with a major version bump.' -R OWNER/REPO
  gh label create 'release/minor' -c '#c5def5' -d 'On merge, creates a new release with a minor version bump.' -R OWNER/REPO
  gh label create 'release/patch' -c '#d4c5f9' -d 'On merge, creates a new release with a patch version bump.' -R OWNER/REPO
+```
+
+## Actions policy
+
+This action ideally executes with the `pull_request_target` event and is safe to do so, since it does not perform a checkout of the code.
+
+Github requires that an Actions Policy be configured that explicitly allows that event usage. In <https://github.com/OWNER/REPO/settings/actions/rules>, import that following:
+
+```json
+{
+  "name": "Allow release-on-merge to use pull_request_target",
+  "target": "actions",
+  "source_type": "Repository",
+  "enforcement": "active",
+  "conditions": {
+    "workflow_path": {
+      "exclude": [],
+      "include": [
+        ".github/workflows/release-on-merge.yml"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "restrict_action_events",
+      "parameters": {
+        "allowed_events": [
+          "pull_request_target"
+        ]
+      }
+    }
+  ],
+  "bypass_actors": []
+}
 ```
